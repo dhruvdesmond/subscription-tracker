@@ -25,8 +25,8 @@ export const subscriptionSchema = z.object({
   reminderDays: z.number().int().min(0).max(30),
   icon: z.string().max(10),
   color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid color format'),
-  notes: z.string().max(500).optional().default(''),
-  isActive: z.boolean().default(true),
+  notes: z.string().max(500),
+  isActive: z.boolean(),
 });
 
 export type SubscriptionFormData = z.infer<typeof subscriptionSchema>;

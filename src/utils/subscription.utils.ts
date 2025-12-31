@@ -112,6 +112,30 @@ export function calculateSpendingByCategory(subscriptions: Subscription[]): Reco
 }
 
 /**
+ * Category breakdown item
+ */
+export interface CategoryBreakdownItem {
+  category: string;
+  total: number;
+  count: number;
+}
+
+/**
+ * Get category breakdown with totals
+ */
+export function getCategoryBreakdown(subscriptions: Subscription[]): CategoryBreakdownItem[] {
+  const grouped = groupByCategory(subscriptions.filter(s => s.isActive));
+
+  return Object.entries(grouped)
+    .map(([category, subs]) => ({
+      category,
+      total: subs.reduce((sum, sub) => sum + normalizeToMonthly(sub.amount, sub.cycle), 0),
+      count: subs.length,
+    }))
+    .sort((a, b) => b.total - a.total);
+}
+
+/**
  * Sort subscriptions by field
  */
 export function sortSubscriptions(
